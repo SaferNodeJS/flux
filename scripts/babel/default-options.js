@@ -11,10 +11,9 @@
 
 var assign = require('object-assign');
 
-var babelPluginDEV = require('fbjs-scripts/babel/dev-expression');
-var babelPluginModules = require('fbjs-scripts/babel/rewrite-modules');
-
-var moduleMap = require('fbjs/module-map');
+var babelPluginDEV = require('babel-plugin-dev-expression');
+var babelPluginModules = require('babel-plugin-module-rewrite');
+var moduleMap = require('babel-plugin-module-map');
 
 module.exports = {
   stage: 1,
