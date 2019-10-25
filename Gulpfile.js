@@ -100,14 +100,14 @@ const buildDist = async function (opts) {
 };
 
 function clean() {
-  return del([paths.lib, 'Flux.js']);
+  return del([paths.lib, paths.dist, 'Flux.js']);
 };
 
 function libs() {
   return gulp
     .src(paths.src)
     .pipe(flatten())
-    .pipe(gulp.dest(paths.lib));
+    .pipe(gulp.dest(paths.lib))
 };
 
 function flow() {
