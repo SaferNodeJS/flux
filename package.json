@@ -24,7 +24,7 @@
     "build": "gulp build",
     "prepublish": "gulp publish",
     "test": "NODE_ENV=test jest",
-    "postinstall":"npm audit fix"
+    "postinstall": "npm audit fix"
   },
   "repository": {
     "type": "git",
@@ -46,6 +46,7 @@
     "@babel/preset-typescript": "^7.6.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-dev-expression": "^0.2.2",
+    "babel-plugin-module-map": "^1.0.1",
     "babel-plugin-module-resolver": "^3.2.0",
     "babel-plugin-module-rewrite": "^0.2.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
