@@ -85,7 +85,7 @@ function clean() {
 function libs() {
   return gulp
     .src(paths.src)
-    // .pipe(babel(babelDefaultOptions))
+    .pipe(babel(babelDefaultOptions))
     .pipe(flatten())
     .pipe(gulp.dest(paths.lib));
 };

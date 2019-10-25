@@ -3,11 +3,13 @@ const presets = [
 ];
 const plugins = [
     ["babel-plugin-dev-expression"],
-    ["module-rewrite"],
+    ["babel-plugin-module-rewrite"],
+    ["babel-plugin-module-resolver"],
     ["babel-plugin-module-map"],
-    ["@babel/plugin-proposal-class-properties"]
+    ["@babel/plugin-proposal-class-properties"],
+    ["@babel/plugin-transform-typescript"]
 ];
 
-module.exports = {
+export default {
     presets, plugins
 };
