@@ -6,10 +6,9 @@ const plugins = [
     ["babel-plugin-module-rewrite"],
     ["babel-plugin-module-resolver"],
     ["babel-plugin-module-map"],
-    ["@babel/plugin-proposal-class-properties"],
-    ["@babel/plugin-transform-typescript"]
+    ["@babel/plugin-proposal-class-properties"]
 ];
 
-export default {
+module.exports = {
     presets, plugins
 };

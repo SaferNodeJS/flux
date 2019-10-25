@@ -78,6 +78,9 @@
     "globals": {
       "__DEV__": true
     },
+    "modulePaths": [
+      "<rootDir>/src/"
+    ],
     "modulePathIgnorePatterns": [
       "/lib/",
       "/node_modules/"
