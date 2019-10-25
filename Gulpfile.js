@@ -1,10 +1,13 @@
 const gulp = require('gulp');
+const babel = require('gulp-babel')
 const flatten = require('gulp-flatten');
 const gulpUtil = require('gulp-util');
 const header = require('gulp-header');
 const rename = require('gulp-rename');
 const del = require('del');
 const webpackStream = require('webpack-stream');
+const babelOpts = require('./scripts/babel/default-options');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const DEVELOPMENT_HEADER = [
   '/**',
@@ -35,12 +38,12 @@ const paths = {
   ],
 };
 
-const buildDist = function(opts) {
+const buildDist = async function (opts) {
   const webpackOpts = {
     debug: opts.debug,
     module: {
       loaders: [
-        {test: /\.js$/, loader: 'babel'}
+        { test: /\.js$/, loader: 'babel' }
       ],
     },
     output: {
@@ -55,24 +58,43 @@ const buildDist = function(opts) {
         ),
       })
     ]
+    ,
+    optimization: {
+      minimizer: [
+        // we specify a custom UglifyJsPlugin here to get source maps in production
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          uglifyOptions: {
+            compress: false,
+            ecma: 6,
+            mangle: true
+          },
+          sourceMap: true
+        })
+      ]
+    }
   };
   if (!opts.debug) {
     webpackOpts.plugins.push(
-      new webpackStream.webpack.optimize.UglifyJsPlugin({
-        compress: {
-          hoist_vars: true,
-          screw_ie8: true,
-          warnings: false
-        }
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: false,
+          ecma: 6,
+          mangle: true
+        },
+        sourceMap: true
       })
     );
   }
-  return webpackStream(webpackOpts, null, function(err, stats) {
+  return webpackStream(webpackOpts, null, function (err, stats) {
     if (err) {
       throw new gulpUtil.PluginError('webpack', err);
     }
     if (stats.compilation.errors.length) {
-      gulpUtil.log('webpack', '\n' + stats.toString({colors: true}));
+      gulpUtil.log('webpack', '\n' + stats.toString({ colors: true }));
     }
   });
 };
@@ -92,47 +114,40 @@ function flow() {
   return gulp
     .src(paths.src)
     .pipe(flatten())
-    .pipe(rename({extname: '.js.flow'}))
+    .pipe(rename({ extname: '.js.flow' }))
     .pipe(gulp.dest(paths.lib));
 };
 
-async function distDefault() {
-  gulp.series(libs,function() {
+function distDefault() {
   const distOpts = {
     debug: true,
     output: 'Flux.js',
     library: 'Flux',
   };
-  return gulp
-    .src(paths.entry)
+  return gulp.src(paths.entry)
     .pipe(buildDist(distOpts))
     .pipe(header(DEVELOPMENT_HEADER, {
       version: process.env.npm_package_version,
     }))
     .pipe(gulp.dest(paths.dist));
-  })
 }
 
-async function distUtils() {
-  gulp.series(libs,function() {
+function distUtils() {
   const distOpts = {
     debug: true,
     output: 'FluxUtils.js',
     library: 'FluxUtils',
   };
-  return gulp
-    .src(paths.entryUtils)
+  return gulp.src(paths.entryUtils)
     .pipe(buildDist(distOpts))
     .pipe(header(DEVELOPMENT_HEADER, {
       version: process.env.npm_package_version,
     }))
-    .pipe(gulp.dest(paths.dist));
-  })
+    .pipe(gulp.dest(paths.dist))
 }
 
-async function distMin() {
-  gulp.series(libs,function() {
-    const distOpts = {
+function distMin() {
+  const distOpts = {
     debug: false,
     output: 'Flux.min.js',
     library: 'Flux',
@@ -143,13 +158,11 @@ async function distMin() {
     .pipe(header(PRODUCTION_HEADER, {
       version: process.env.npm_package_version,
     }))
-    .pipe(gulp.dest(paths.dist));
-  })
+    .pipe(gulp.dest(paths.dist))
 }
 
-async function distUtilsMin() {
-  gulp.series(libs,function() {
-    const distOpts = {
+function distUtilsMin() {
+  const distOpts = {
     debug: false,
     output: 'FluxUtils.min.js',
     library: 'FluxUtils',
@@ -160,28 +173,29 @@ async function distUtilsMin() {
     .pipe(header(PRODUCTION_HEADER, {
       version: process.env.npm_package_version,
     }))
-    .pipe(gulp.dest(paths.dist));
-  })
+    .pipe(gulp.dest(paths.dist))
 }
 
 var build = gulp.series(
   libs,
   flow,
   distDefault,
-  distUtils
+  distUtils,
+  buildDist
 );
 
 var publish = gulp.series(
   clean,
   flow,
   distDefault,
-  gulp.parallel(distMin,distUtilsMin,distUtilsMin)
+  gulp.parallel(distMin, distUtilsMin, distUtilsMin)
 );
 
 
 exports.clean = clean;
 exports.libs = libs;
 exports.flow = flow;
+exports.buildDist = buildDist
 exports.distDefault = distDefault;
 exports.distUtils = distUtils;
 exports.distMin = distMin;
