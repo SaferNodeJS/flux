@@ -23,7 +23,8 @@
   "scripts": {
     "build": "gulp build",
     "prepublish": "gulp publish",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "postinstall":"npm audit fix"
   },
   "repository": {
     "type": "git",
