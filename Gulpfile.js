@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const babel = require('gulp-babel');
 const flatten = require('gulp-flatten');
 const gulpUtil = require('gulp-util');
 const header = require('gulp-header');
@@ -85,7 +84,6 @@ function clean() {
 function libs() {
   return gulp
     .src(paths.src)
-    .pipe(babel(babelDefaultOptions))
     .pipe(flatten())
     .pipe(gulp.dest(paths.lib));
 };

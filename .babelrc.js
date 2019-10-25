@@ -6,6 +6,7 @@ const plugins = [
     ["babel-plugin-module-rewrite"],
     ["babel-plugin-module-resolver"],
     ["babel-plugin-module-map"],
+    ["@babel/plugin-proposal-export-default-from"],
     ["@babel/plugin-proposal-class-properties"]
 ];
 
