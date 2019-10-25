@@ -39,6 +39,7 @@
   "license": "BSD-3-Clause",
   "devDependencies": {
     "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-export-default-from": "^7.5.2",
     "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.6.3",
     "babel-loader": "^8.0.6",
