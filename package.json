@@ -41,6 +41,7 @@
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/plugin-proposal-export-default-from": "^7.5.2",
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.6.3",
     "@babel/preset-typescript": "^7.6.0",
@@ -52,7 +53,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-fbjs": "^3.3.0",
     "del": "^2.2.0",
-    "fbjs-scripts": "^0.5.0",
+    "fbjs-scripts": "^1.2.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-flatten": "^0.2.0",
@@ -60,13 +61,13 @@
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.6",
     "immutable": "^3.7.4",
-    "jest": "^15.1.1",
+    "jest": "^24.9.0",
     "object-assign": "^4.0.1",
     "react": "^16.11.0",
     "react-addons-test-utils": "^15.6.2",
     "react-dom": "^16.11.0",
-    "webpack": "^1.11.0",
-    "webpack-stream": "^3.1.0"
+    "webpack": "^4.41.2",
+    "webpack-stream": "^5.2.1"
   },
   "dependencies": {
     "audit": "0.0.6",
@@ -78,20 +79,26 @@
     "react": "^15.0.2 || ^16.0.0-beta || ^16.0.0"
   },
   "jest": {
+    "globals": {
+      "__DEV__": true
+    },
+    "preprocessorIgnorePatterns": [
+      "/node_modules/"
+    ],
     "modulePathIgnorePatterns": [
       "/lib/",
       "/node_modules/"
     ],
-    "preprocessorIgnorePatterns": [
+    "transformIgnorePatterns": [
       "/node_modules/"
     ],
     "rootDir": "./",
-    "scriptPreprocessor": "scripts/jest/preprocessor.js",
-    "setupFiles": [
-      "scripts/jest/environment.js"
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/src/(?!(__forks__/fetch.js$|fetch/))"
     ],
-    "testPathDirs": [
-      "<rootDir>/src"
-    ]
+    "transform": {
+      ".*": "<rootDir>/scripts/jest/preprocessor.js"
+    }
   }
 }
