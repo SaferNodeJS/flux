@@ -1,7 +1,5 @@
 {
-    "presets": [
-        "@babel/preset-react"
-    ],
+    "presets": ["fbjs"],
     "plugins": [
         "babel-plugin-dev-expression",
         "babel-plugin-module-rewrite",

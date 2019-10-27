@@ -24,6 +24,7 @@ const PRODUCTION_HEADER = [
   ' */',
 ].join('\n') + '\n';
 
+const currentVersion=require('./package.json').version;
 const paths = {
   dist: './dist/',
   lib: 'lib',
@@ -108,7 +109,7 @@ async function distDefault() {
   return gulp.src(paths.entry)
     .pipe(buildDist(distOpts))
     .pipe(header(DEVELOPMENT_HEADER, {
-      version: process.env.npm_package_version,
+      version: currentVersion,
     }))
     .pipe(gulp.dest(paths.dist)
     )
@@ -124,7 +125,7 @@ async function distUtils() {
     .src(paths.entryUtils)
     .pipe(buildDist(distOpts))
     .pipe(header(DEVELOPMENT_HEADER, {
-      version: process.env.npm_package_version,
+      version: currentVersion,
     }))
     .pipe(gulp.dest(paths.dist))
 }
@@ -139,7 +140,7 @@ async function distMin() {
     .src(paths.entry)
     .pipe(buildDist(distOpts))
     .pipe(header(PRODUCTION_HEADER, {
-      version: process.env.npm_package_version,
+      version: currentVersion,
     }))
     .pipe(gulp.dest(paths.dist))
 }
@@ -154,7 +155,7 @@ async function distUtilsMin() {
     .src(paths.entryUtils)
     .pipe(buildDist(distOpts))
     .pipe(header(PRODUCTION_HEADER, {
-      version: process.env.npm_package_version,
+      version: currentVersion,
     }))
     .pipe(gulp.dest(paths.dist))
 }
