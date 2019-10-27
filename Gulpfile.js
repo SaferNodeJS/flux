@@ -6,6 +6,7 @@ const header = require('gulp-header');
 const rename = require('gulp-rename');
 const del = require('del');
 const webpackStream = require('webpack-stream');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const DEVELOPMENT_HEADER = [
   '/**',
@@ -24,7 +25,7 @@ const PRODUCTION_HEADER = [
   ' */',
 ].join('\n') + '\n';
 
-const currentVersion=require('./package.json').version;
+const currentVersion = require('./package.json').version;
 const paths = {
   dist: './dist/',
   lib: 'lib',
@@ -59,15 +60,16 @@ const buildDist = function (opts) {
     ]
   };
   if (!opts.debug) {
-    webpackOpts.plugins.push(
-      new webpackStream.webpack.optimize.UglifyJsPlugin({
-        compress: {
-          hoist_vars: true,
-          screw_ie8: true,
-          warnings: false
-        }
-      })
-    );
+    webpackOpts.optimization= {
+      minimizer: [
+        new UglifyJsPlugin({
+          sourceMap: true,
+          compress: {
+            warnings: false,
+          },
+        }),
+      ],
+    }
   }
   return webpackStream(webpackOpts, null, function (err, stats) {
     if (err) {
@@ -169,10 +171,10 @@ var build = gulp.series(
 var publish = gulp.series(
   libs,
   flow,
-  distDefault, 
-  distMin, 
-  distUtils, 
-  distUtilsMin, 
+  distDefault,
+  distMin,
+  distUtils,
+  distUtilsMin,
   distUtilsMin
 );
 
