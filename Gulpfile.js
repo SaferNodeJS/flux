@@ -40,11 +40,20 @@ const paths = {
 
 const buildDist = function (opts) {
   const webpackOpts = {
-    debug: opts.debug,
+    // debug: opts.debug,
     module: {
-      loaders: [
-        { test: /\.js$/, loader: 'babel' }
-      ],
+      rules: [
+        {
+          test: /\.m?js$/,
+          exclude: /(node_modules|bower_components)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['fbjs']
+            }
+          }
+        }
+      ]
     },
     output: {
       filename: opts.output,
