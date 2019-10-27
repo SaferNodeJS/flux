@@ -11,8 +11,8 @@
 
 var assign = require('object-assign');
 
-var babelPluginDEV = require('fbjs-scripts/babel/dev-expression');
-var babelPluginModules = require('fbjs-scripts/babel/rewrite-modules');
+const babelPluginModules = require('babel-preset-fbjs/plugins/rewrite-modules');
+const babelPluginDEV = require('babel-preset-fbjs/plugins/dev-expression');
 
 var moduleMap = require('fbjs/module-map');
 
